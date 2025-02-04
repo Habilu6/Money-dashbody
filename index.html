@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container" id="login-container">
+        <form class="login-form" id="login-form">
+            <h2>Login</h2>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+    </div>
+
+    <div class="options-container" id="options-container" style="display:none;">
+        <h2>Welcome, <span id="user-name"></span>!</h2>
+        <p>Please choose an option:</p>
+        <button onclick="storeMoney()">Store Money</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div class="money-dashboard" id="money-dashboard" style="display:none;">
+        <h2>Money Dashboard</h2>
+        <p>Your current balance: <span id="current-balance">0</span> USD</p>
+        <div class="input-group">
+            <label for="amount">Enter amount to store:</label>
+            <input type="number" id="amount" name="amount" min="1" required>
+        </div>
+        <button onclick="addMoney()">Add Money</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Handle login
+        const loginForm = document.getElementById('login-form');
+        const loginContainer = document.getElementById('login-container');
+        const optionsContainer = document.getElementById('options-container');
+        const moneyDashboard = document.getElementById('money-dashboard');
+        const usernameField = document.getElementById('username');
+        const userNameSpan = document.getElementById('user-name');
+        let currentBalance = 0;
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = usernameField.value;
+            const password = document.getElementById('password').value;
+
+            // Simulate checking credentials
+            if (username && password) {
+                loginContainer.style.display = 'none'; // Hide login form
+                optionsContainer.style.display = 'block'; // Show options container
+                userNameSpan.textContent = username; // Display username
+            } else {
+                alert("Please enter valid credentials!");
+            }
+        });
+
+        function storeMoney() {
+            // Hide the options container and show the money dashboard
+            optionsContainer.style.display = 'none';
+            moneyDashboard.style.display = 'block';
+        }
+
+        function addMoney() {
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid amount!");
+                return;
+            }
+
+            // Update balance
+            currentBalance += amount;
+            document.getElementById('current-balance').textContent = currentBalance.toFixed(2);
+            document.getElementById('amount').value = ''; // Clear the input field
+            alert(`Successfully added ${amount} USD to your balance!`);
+        }
+
+        function logout() {
+            // Reset the page to the login screen
+            loginContainer.style.display = 'block';
+            optionsContainer.style.display = 'none';
+            moneyDashboard.style.display = 'none';
+
+            // Clear input fields and balance
+            usernameField.value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('amount').value = '';
+            currentBalance = 0;
+            document.getElementById('current-balance').textContent = currentBalance.toFixed(2);
+        }
+    </script>
+</body>
+</html>
